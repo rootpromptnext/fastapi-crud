@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  fastapi:
+    build: .
+    container_name: fastapi-crud
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app    # (Hot reload if needed)
+      - ./items.db:/app/items.db  # Persist SQLite DB outside container
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
