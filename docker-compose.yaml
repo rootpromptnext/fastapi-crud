@@ -2,13 +2,16 @@ version: "3.9"
 
 services:
   fastapi:
-    build: .
+    image: prayag/fastapi-crud:latest   # <-- Important
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: fastapi-crud
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app/app    # (Hot reload if needed)
-      - ./items.db:/app/items.db  # Persist SQLite DB outside container
+      - ./app:/app/app
+      - ./items.db:/app/items.db
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
