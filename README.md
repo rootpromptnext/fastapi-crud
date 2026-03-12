@@ -1,4 +1,4 @@
-# FastAPI CRUD Application
+## FastAPI CRUD Application
 
 This is a simple FastAPI CRUD application using:
 
@@ -63,7 +63,7 @@ Swagger docs:
 
 ***
 
-# Working With SQLite (items.db)
+## Working With SQLite (items.db)
 
 The app automatically creates a SQLite database file:
 
@@ -126,7 +126,7 @@ Expected output:
 
 ***
 
-# Testing the API with cURL
+## Testing the API with cURL
 
 Below are the **exact curl commands** used during testing.
 
@@ -274,7 +274,7 @@ Expected output:
 curl http://127.0.0.1:8000/items
 ```
 
-# Publish Docker Image to GitHub Container Registry (GHCR)
+## Publish Docker Image to GitHub Container Registry (GHCR)
 
 Authenticate, build, tag, and push Docker images to **GitHub Container Registry** using your GitHub Personal Access Token (PAT).
 
@@ -331,5 +331,69 @@ Push latest tag:
 
 ```bash
 docker push ghcr.io/rootpromptnext/fastapi-crud:latest
+```
+***
+
+## Deploying Application Using GitHub Container Registry (GHCR) + Kubernetes
+
+This guide explains how to authenticate to GitHub Container Registry (GHCR), store the credentials as a Kubernetes secret, and deploy your application using `deployment.yaml`.
+
+---
+
+## Export GitHub Credentials
+
+Set your GitHub username and GitHub Personal Access Token (PAT):
+
+```bash
+export GITHUB_USERNAME=rootpromptnext
+export GITHUB_PAT="<changeme>"
+````
+
+Create a token here:  
+<https://github.com/settings/tokens>
+
+***
+
+## Create Kubernetes Secret for GHCR
+
+Kubernetes needs a Docker registry secret to pull images from GHCR.
+
+Run:
+
+```bash
+kubectl create secret docker-registry ghcr-secret \
+  --docker-server=ghcr.io \
+  --docker-username=$GITHUB_USERNAME \
+  --docker-password=$GITHUB_PAT \
+  --docker-email=rootpromptnext@gmail.com
+```
+
+This creates a secret named **ghcr-secret**, which must be referenced in your `deployment.yaml`.
+
+***
+
+## Apply Kubernetes Deployment
+
+Make sure your `deployment.yaml` includes:
+
+```yaml
+imagePullSecrets:
+  - name: ghcr-secret
+```
+
+Deploy it:
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+***
+
+## Verify Resources
+
+Check that Pods, Deployments, and Services were created successfully:
+
+```bash
+kubectl get all
 ```
 
