@@ -187,7 +187,7 @@ curl -X POST http://127.0.0.1:8000/items \
 
 ***
 
-### Final list of items
+## **List all items**
 
 ```bash
 curl http://127.0.0.1:8000/items
@@ -195,17 +195,81 @@ curl http://127.0.0.1:8000/items
 
 ***
 
-# Testing Remote Deployment (Optional)
+## **Create an item**
 
-If deployed to a server:
-
-```bash
-curl http://<public-ip>:8000/items
-```
-
-Example used:
+### Create Laptop
 
 ```bash
-curl http://34.59.63.24:8000/items
+curl -X POST http://127.0.0.1:8000/items \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "Laptop",
+        "description": "Dell Latitude"
+      }'
 ```
 
+### Create Keyboard
+
+```bash
+curl -X POST http://127.0.0.1:8000/items \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "Keyboard",
+        "description": "Mechanical RGB keyboard"
+      }'
+```
+
+***
+
+## *Get a specific item**
+
+```bash
+curl http://127.0.0.1:8000/items/1
+```
+
+***
+
+## **Update an item (PUT)**
+
+Example: Update item with ID=1
+
+```bash
+curl -X PUT http://127.0.0.1:8000/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "Updated Laptop",
+        "description": "Updated description"
+      }'
+```
+
+Expected result:
+
+```json
+{
+  "id": 1,
+  "name": "Updated Laptop",
+  "description": "Updated description"
+}
+```
+
+***
+
+## **Delete an item (DELETE)**
+
+Example: Delete item with ID=1
+
+```bash
+curl -X DELETE http://127.0.0.1:8000/items/1
+```
+
+Expected output:
+
+```json
+{"detail":"Item deleted"}
+```
+
+## **Verify after update/delete**
+
+```bash
+curl http://127.0.0.1:8000/items
+```
