@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-echo "📦 Updating system..."
+echo "Updating system..."
 sudo apt-get update -y
 sudo apt-get install -y ca-certificates curl gnupg
 
-echo "🔐 Adding Docker’s official GPG key..."
+echo "Adding Docker’s official GPG key..."
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
   sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
