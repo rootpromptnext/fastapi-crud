@@ -273,3 +273,63 @@ Expected output:
 ```bash
 curl http://127.0.0.1:8000/items
 ```
+
+# Publish Docker Image to GitHub Container Registry (GHCR)
+
+Authenticate, build, tag, and push Docker images to **GitHub Container Registry** using your GitHub Personal Access Token (PAT).
+
+---
+
+## Authenticate to GHCR
+
+Replace `<changeme>` with your GitHub Personal Access Token (PAT).
+
+```bash
+export GITHUB_PAT="<changeme>"
+export GITHUB_USERNAME="rootpromptnext"
+````
+
+Login to GHCR:
+
+```bash
+echo $GITHUB_PAT | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
+```
+
+You should see:
+
+    Login Succeeded
+
+***
+
+## Build Docker Images
+
+Ensure your Dockerfile is in the project root.
+
+### Build with version tag:
+
+```bash
+docker build -t ghcr.io/rootpromptnext/fastapi-crud:v1 .
+```
+
+### Build with `latest` tag:
+
+```bash
+docker build -t ghcr.io/rootpromptnext/fastapi-crud:latest .
+```
+
+***
+
+## Push Images to GHCR
+
+Push versioned image:
+
+```bash
+docker push ghcr.io/rootpromptnext/fastapi-crud:v1
+```
+
+Push latest tag:
+
+```bash
+docker push ghcr.io/rootpromptnext/fastapi-crud:latest
+```
+
