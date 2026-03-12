@@ -1,0 +1,211 @@
+# FastAPI CRUD Application
+
+This is a simple FastAPI CRUD application using:
+
+- FastAPI  
+- SQLite (items.db)  
+- SQLAlchemy  
+- Uvicorn  
+- Pydantic  
+
+It provides a clean CRUD API for managing items with `name` and `description`.
+
+---
+
+## Project Structure
+
+```
+
+fastapi-crud/
+├── app/
+│   ├── main.py
+│   ├── models.py
+│   ├── schemas.py
+│   └── database.py
+├── items.db             ← SQLite database automatically created
+├── requirements.txt
+└── venv/                ← Virtual environment
+
+````
+
+---
+
+## Setup Instructions
+
+### Create & Activate Virtual Environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+````
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run the FastAPI App
+
+> Use the python -m method to avoid Uvicorn reloader issues on Ubuntu.
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+App available at:
+
+    http://127.0.0.1:8000
+
+Swagger docs:
+
+    http://127.0.0.1:8000/docs
+
+***
+
+# Working With SQLite (items.db)
+
+The app automatically creates a SQLite database file:
+
+    items.db
+
+You checked the folder content:
+
+    app  items.db  requirements.txt  venv
+
+### Install sqlite3 (if missing)
+
+If you get:
+
+    Command 'sqlite3' not found
+
+Install it:
+
+```bash
+sudo apt install sqlite3
+```
+
+### Open the SQLite Database
+
+Navigate to project root:
+
+```bash
+cd fastapi-crud
+sqlite3 items.db
+```
+
+### View Tables
+
+Inside the SQLite shell:
+
+```sql
+.tables
+```
+
+You should see:
+
+    items
+
+### View Items Table Schema
+
+```sql
+PRAGMA table_info(items);
+```
+
+Expected output:
+
+    0|id|INTEGER|1||1
+    1|name|VARCHAR|0||0
+    2|description|VARCHAR|0||0
+
+### Exit SQLite
+
+```sql
+.quit
+```
+
+***
+
+# Testing the API with cURL
+
+Below are the **exact curl commands** used during testing.
+
+***
+
+### Get all items
+
+```bash
+curl http://127.0.0.1:8000/items
+```
+
+***
+
+### Create Item 1 — Laptop
+
+```bash
+curl -X POST http://127.0.0.1:8000/items \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "Laptop",
+        "description": "Dell Latitude"
+      }'
+```
+
+***
+
+### View items again
+
+```bash
+curl http://127.0.0.1:8000/items
+```
+
+***
+
+### Update item #1
+
+```bash
+curl -X PUT http://127.0.0.1:8000/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "Updated Laptop",
+        "description": "Updated description"
+      }'
+```
+
+***
+
+### Create Item 2 — Keyboard
+
+```bash
+curl -X POST http://127.0.0.1:8000/items \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "Keyboard",
+        "description": "Mechanical RGB keyboard"
+      }'
+```
+
+***
+
+### Final list of items
+
+```bash
+curl http://127.0.0.1:8000/items
+```
+
+***
+
+# Testing Remote Deployment (Optional)
+
+If deployed to a server:
+
+```bash
+curl http://<public-ip>:8000/items
+```
+
+Example used:
+
+```bash
+curl http://34.59.63.24:8000/items
+```
+
